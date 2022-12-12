@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type UserDeliv struct {
@@ -26,9 +25,10 @@ func NewUser(Service user.ServiceEntities, e *echo.Echo) {
 }
 func (delivery *UserDeliv) Register(c echo.Context) error {
 	Inputuser := RequestUser{} //request pengisian postman atau request kontrak user
-	generate, _ := bcrypt.GenerateFromPassword([]byte(Inputuser.Password), bcrypt.DefaultCost)
-	Inputuser.Password = string(generate)
 	errbind := c.Bind(&Inputuser)
+
+	generatePass := user.Bcript(Inputuser.Password)
+	Inputuser.Password = generatePass
 
 	if errbind != nil {
 		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("erorr read data"+errbind.Error()))
@@ -38,7 +38,7 @@ func (delivery *UserDeliv) Register(c echo.Context) error {
 	if errResultCore != nil {
 		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("erorr read data"+errResultCore.Error()))
 	}
-	return c.JSON(http.StatusCreated, helper.PesanSuksesHelper("berhasil melakukan register"))
+	return c.JSON(http.StatusCreated, helper.PesanSuksesHelper("berhasil create user"))
 }
 func (delivery *UserDeliv) Getall(c echo.Context) error {
 
