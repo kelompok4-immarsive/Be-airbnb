@@ -29,3 +29,22 @@ func FromCoreUser(CoreData _user.CoreUser) User {
 	}
 	return ModelUser
 }
+func (dataModel *User) ModelsToCore() _user.CoreUser { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
+	return _user.CoreUser{
+		ID:       dataModel.ID,
+		Name:     dataModel.Name,
+		Email:    dataModel.Email, //mapping data core ke data gorm model
+		Password: dataModel.Password,
+		Phone:    dataModel.Phone,
+		Address:  dataModel.Address,
+		Status:   dataModel.Status,
+		Role:     dataModel.Role,
+	}
+}
+func ListModelTOCore(dataModel []User) []_user.CoreUser { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
+	var dataCore []_user.CoreUser
+	for _, value := range dataModel {
+		dataCore = append(dataCore, value.ModelsToCore())
+	}
+	return dataCore //  untuk menampilkan data ke controller
+}

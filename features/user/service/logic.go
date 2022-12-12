@@ -30,8 +30,10 @@ func (*ServiceUser) GetId(id int) (CoreUser error, err error) {
 }
 
 // Getall implements user.ServiceEntities
-func (*ServiceUser) Getall() (data []user.CoreUser, err error) {
-	panic("unimplemented")
+func (service *ServiceUser) Getall() (data []user.CoreUser, err error) {
+
+	data, err = service.RepoUser.Getall() // memanggil struct entities repository yang ada di entities yang berisi coding logic
+	return
 }
 
 // Register implements user.ServiceEntities

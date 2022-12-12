@@ -18,6 +18,7 @@ func NewUser(Service user.ServiceEntities, e *echo.Echo) {
 		ServiceUser: Service,
 	}
 	e.POST("/user/register", Handler.Register)
+	e.GET("/user", Handler.Getall)
 }
 func (delivery *UserDeliv) Register(c echo.Context) error {
 	Inputuser := RequestUser{} //request pengisian postman atau request kontrak user
@@ -34,4 +35,15 @@ func (delivery *UserDeliv) Register(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("erorr read data"+errResultCore.Error()))
 	}
 	return c.JSON(http.StatusCreated, helper.PesanSuksesHelper("berhasil melakukan register"))
+}
+func (delivery *UserDeliv) Getall(c echo.Context) error {
+
+	result, err := delivery.ServiceUser.Getall() //memanggil fungsi service yang ada di folder service
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("erorr read data"))
+	}
+	var ResponData = ListUserCoreToUserRespon(result)
+	return c.JSON(http.StatusOK, helper.PesanDataBerhasilHelper("berhasil membaca  user", ResponData))
+
 }
