@@ -39,6 +39,8 @@ func (service *ServiceUser) Getall() (data []user.CoreUser, err error) {
 
 // Register implements user.ServiceEntities
 func (service *ServiceUser) Register(input user.CoreUser) (err error) {
+	input.Status = "Active"
+	input.Role = "Travelles"
 	if validasieror := service.validasi.Struct(input); validasieror != nil {
 		return validasieror
 	}
