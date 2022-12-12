@@ -23,14 +23,14 @@ type ServiceEntities interface {
 	Getall() (data []CoreUser, err error)
 	Register(input CoreUser) (err error)
 	Update(id int, input CoreUser) error
-	GetId(id int) (CoreUser, err error)
+	GetById(id int) (data CoreUser, err error)
 	DeleteId(id int) (CoreUser, error)
 }
 type RepositoryEntities interface {
 	Getall() (data []CoreUser, err error)
 	Register(input CoreUser) (rows int, err error)
 	Update(id int, input CoreUser) error
-	GetId(id int) (CoreUser, err error)
+	GetById(id int) (data CoreUser, err error)
 	DeleteId(id int) (CoreUser, error)
 }
 

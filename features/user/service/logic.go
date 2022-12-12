@@ -20,13 +20,15 @@ func NewUser(repo user.RepositoryEntities) user.ServiceEntities {
 }
 
 // DeleteId implements user.ServiceEntities
-func (*ServiceUser) DeleteId(id int) (user.CoreUser, error) {
-	panic("unimplemented")
+func (service *ServiceUser) DeleteId(id int) (user.CoreUser, error) {
+	data, err := service.RepoUser.DeleteId(id) // memanggil struct entities repository yang ada di entities yang berisi coding logic
+	return data, err
 }
 
 // GetId implements user.ServiceEntities
-func (*ServiceUser) GetId(id int) (CoreUser error, err error) {
-	panic("unimplemented")
+func (service *ServiceUser) GetById(id int) (data user.CoreUser, err error) {
+	data, err = service.RepoUser.GetById(id) // memanggil struct entities repository yang ada di entities yang berisi coding logic
+	return
 }
 
 // Getall implements user.ServiceEntities
