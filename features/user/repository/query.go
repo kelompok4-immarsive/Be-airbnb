@@ -19,13 +19,44 @@ func NewUser(db *gorm.DB) user.RepositoryEntities {
 }
 
 // DeleteId implements user.RepositoryEntities
-func (*RepoUser) DeleteId(id int) (user.CoreUser, error) {
-	panic("unimplemented")
+func (repo *RepoUser) DeleteId(id int) (user.CoreUser, error) {
+	users := User{}
+	users.Status = "Deactivated"
+	tx := repo.db.Model(&users).Where("id = ?", id).Updates(&users)
+
+	if tx.Error != nil {
+		return user.CoreUser{}, tx.Error
+	}
+
+	tx1 := repo.db.Delete(&users, id)
+	if tx1.Error != nil {
+		return user.CoreUser{}, tx.Error
+	}
+
+	txres := repo.db.Unscoped().Where("id=?", id).Find(&users)
+	if txres.Error != nil {
+		return user.CoreUser{}, txres.Error
+	}
+	if tx.RowsAffected == 0 {
+		return user.CoreUser{}, errors.New("id not found")
+
+	}
+	result := users.ModelsToCore()
+	return result, nil
 }
 
 // GetId implements user.RepositoryEntities
-func (*RepoUser) GetId(id int) (CoreUser error, err error) {
-	panic("unimplemented")
+func (repo *RepoUser) GetById(id int) (data user.CoreUser, err error) {
+	var users User
+
+	tx := repo.db.First(&users, id)
+
+	if tx.Error != nil {
+
+		return user.CoreUser{}, tx.Error
+	}
+	gorms := users.ModelsToCore()
+	return gorms, nil
 }
 
 // Getall implements user.RepositoryEntities
