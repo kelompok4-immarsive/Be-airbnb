@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"fajar/testing/features/user"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -58,6 +59,19 @@ func (repo *RepoUser) Register(input user.CoreUser) (rows int, err error) {
 }
 
 // Update implements user.RepositoryEntities
-func (*RepoUser) Update(id int, input user.CoreUser) error {
-	panic("unimplemented")
+func (repo *RepoUser) Update(id int, input user.CoreUser) error {
+	userGorm := FromCoreUser(input)
+
+	if userGorm.UpdatedAt != (time.Time{}) {
+		userGorm.Status = "Not-Active"
+	} else {
+		userGorm.Status = "Active"
+	}
+	tx := repo.db.Model(&userGorm).Where("id = ?", id).Updates(&userGorm)
+
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
 }
