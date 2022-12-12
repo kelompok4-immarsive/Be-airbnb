@@ -1,6 +1,10 @@
 package user
 
-import "time"
+import (
+	"time"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 type CoreUser struct {
 	ID        uint
@@ -28,4 +32,17 @@ type RepositoryEntities interface {
 	Update(id int, input CoreUser) error
 	GetId(id int) (CoreUser, err error)
 	DeleteId(id int) (CoreUser, error)
+}
+
+func Bcript(y string) string {
+	password := []byte(y)
+
+	// Hashing the password with the default cost of 10
+	hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(hashedPassword)
+
 }

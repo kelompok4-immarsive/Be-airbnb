@@ -28,8 +28,17 @@ func (*RepoUser) GetId(id int) (CoreUser error, err error) {
 }
 
 // Getall implements user.RepositoryEntities
-func (*RepoUser) Getall() (data []user.CoreUser, err error) {
-	panic("unimplemented")
+func (repo *RepoUser) Getall() (data []user.CoreUser, err error) {
+	var users []User //mengambil data gorm model(model.go)
+	tx := repo.db.Unscoped().Find(&users)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	var DataCore = ListModelTOCore(users) //mengambil data dari gorm model(file repository(model.go))
+
+	return DataCore, nil
+
 }
 
 // Register implements user.RepositoryEntities
