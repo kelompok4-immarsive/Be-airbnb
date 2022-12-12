@@ -31,15 +31,12 @@ func (*ServiceUser) GetId(id int) (CoreUser error, err error) {
 
 // Getall implements user.ServiceEntities
 func (service *ServiceUser) Getall() (data []user.CoreUser, err error) {
-
 	data, err = service.RepoUser.Getall() // memanggil struct entities repository yang ada di entities yang berisi coding logic
 	return
 }
 
 // Register implements user.ServiceEntities
 func (service *ServiceUser) Register(input user.CoreUser) (err error) {
-	input.Status = "Active"
-	input.Role = "Travellers"
 	if validasieror := service.validasi.Struct(input); validasieror != nil {
 		return validasieror
 	}
@@ -51,6 +48,12 @@ func (service *ServiceUser) Register(input user.CoreUser) (err error) {
 }
 
 // Update implements user.ServiceEntities
-func (*ServiceUser) Update(id int, input user.CoreUser) error {
-	panic("unimplemented")
+func (service *ServiceUser) Update(id int, input user.CoreUser) error {
+	input.Password = user.Bcript(input.Password)
+	errUpdate := service.RepoUser.Update(id, input)
+	if errUpdate != nil {
+		return errors.New("GAGAL mengupdate data , QUERY ERROR")
+	}
+
+	return nil
 }

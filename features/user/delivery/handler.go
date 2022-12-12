@@ -4,6 +4,7 @@ import (
 	"fajar/testing/features/user"
 	"fajar/testing/helper"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -19,6 +20,7 @@ func NewUser(Service user.ServiceEntities, e *echo.Echo) {
 	}
 	e.POST("/user/register", Handler.Register)
 	e.GET("/user", Handler.Getall)
+	e.PUT("/user/:id", Handler.Update)
 }
 func (delivery *UserDeliv) Register(c echo.Context) error {
 	Inputuser := RequestUser{} //request pengisian postman atau request kontrak user
@@ -46,4 +48,21 @@ func (delivery *UserDeliv) Getall(c echo.Context) error {
 	var ResponData = ListUserCoreToUserRespon(result)
 	return c.JSON(http.StatusOK, helper.PesanDataBerhasilHelper("berhasil membaca  user", ResponData))
 
+}
+func (delivery *UserDeliv) Update(c echo.Context) error {
+
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	userInput := RequestUser{}
+	errBind := c.Bind(&userInput) // menangkap data yg dikirim dari req body dan disimpan ke variabel
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("Error binding data "+errBind.Error()))
+	}
+
+	dataCore := RequestUserToCoreUser(userInput)
+	err := delivery.ServiceUser.Update(id, dataCore)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.PesanGagalHelper("Failed update data"+err.Error()))
+	}
+	return c.JSON(http.StatusCreated, helper.PesanSuksesHelper("success Update data"))
 }
