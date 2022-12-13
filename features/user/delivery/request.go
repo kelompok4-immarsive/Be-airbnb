@@ -23,3 +23,14 @@ func RequestUserToCoreUser(data RequestUser) user.CoreUser {
 		Status:   data.Status,
 	}
 }
+func RequestUserToCoreUsers(data RequestUser) user.CoreUser {
+	return user.CoreUser{
+		Name:     data.Name,
+		Password: data.Password,
+		Email:    data.Email,
+		Phone:    data.Phone,
+		Address:  data.Address,
+		Role:     data.Role,
+		Status:   data.Status,
+	}
+}
