@@ -10,6 +10,6 @@ COPY ./ /app
 
 RUN go mod tidy
 
-RUN go build -o project-api
+RUN go build -o project-Be
 
 CMD ["./project-Be"]
