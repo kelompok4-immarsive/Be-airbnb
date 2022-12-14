@@ -13,6 +13,7 @@ func toCore(data KomentarRequest) komentar.CoreKomentar {
 	return komentar.CoreKomentar{
 		Vote_star:    data.Vote_star,
 		UserID:       data.UserID,
+		RoomID:       data.RoomID,
 		Isi_komentar: data.Isi_komentar,
 	}
 }
