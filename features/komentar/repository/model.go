@@ -42,8 +42,8 @@ type Room struct {
 func fromCore(dataCore _komentar.CoreKomentar) Komentar {
 	userGorm := Komentar{
 		Vote_star:    dataCore.Vote_star,
-		UserID:       dataCore.User.ID,
-		RoomID:       dataCore.Room.ID,
+		UserID:       dataCore.UserID,
+		RoomID:       dataCore.RoomID,
 		Isi_komentar: dataCore.Isi_komentar,
 	}
 	return userGorm
@@ -53,8 +53,8 @@ func (dataModel *Komentar) toCore() _komentar.CoreKomentar {
 	return _komentar.CoreKomentar{
 		ID:           dataModel.ID,
 		Vote_star:    dataModel.Vote_star,
-		User:         _komentar.CoreUser{ID: dataModel.User.ID},
-		Room:         _komentar.CoreRoom{ID: dataModel.Room.ID},
+		UserID:       dataModel.UserID,
+		RoomID:       dataModel.RoomID,
 		Isi_komentar: dataModel.Isi_komentar,
 	}
 
