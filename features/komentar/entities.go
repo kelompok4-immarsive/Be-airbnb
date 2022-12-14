@@ -5,19 +5,13 @@ import "time"
 type CoreKomentar struct {
 	ID           uint
 	Vote_star    uint
-	User         CoreUser
-	Room         CoreRoom
+	UserID       uint
+	RoomID       uint
 	Isi_komentar string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
 
-type CoreUser struct {
-	ID uint
-}
-type CoreRoom struct {
-	ID uint
-}
 type ServiceInterface interface {
 	Create(input CoreKomentar) (err error)
 	GetAll() (data []CoreKomentar, err error)

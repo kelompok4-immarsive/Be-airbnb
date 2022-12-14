@@ -12,8 +12,7 @@ type KomentarRequest struct {
 func toCore(data KomentarRequest) komentar.CoreKomentar {
 	return komentar.CoreKomentar{
 		Vote_star:    data.Vote_star,
-		User:         komentar.CoreUser{ID: data.UserID},
-		Room:         komentar.CoreRoom{ID: data.RoomID},
+		UserID:       data.UserID,
 		Isi_komentar: data.Isi_komentar,
 	}
 }
