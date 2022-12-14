@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fajar/testing/features/user"
 	_user "fajar/testing/features/user"
 
 	"gorm.io/gorm"
@@ -15,6 +16,17 @@ type User struct {
 	Address  string
 	Status   string
 	Role     string
+	Rooms    []Room
+}
+type Room struct {
+	gorm.Model
+	Name_room string
+	Price     string
+	Deskripsi string
+	Status    string
+	Longitude float64
+	Latitude  float64
+	UserID    uint
 }
 
 func FromCoreUser(CoreData _user.CoreUser) User {
@@ -29,8 +41,8 @@ func FromCoreUser(CoreData _user.CoreUser) User {
 	}
 	return ModelUser
 }
-func (dataModel *User) ModelsToCore() _user.CoreUser { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
-	return _user.CoreUser{
+func (dataModel *User) ModelsToCore() user.CoreUser { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
+	return user.CoreUser{
 		ID:       dataModel.ID,
 		Name:     dataModel.Name,
 		Email:    dataModel.Email, //mapping data core ke data gorm model
@@ -41,6 +53,7 @@ func (dataModel *User) ModelsToCore() _user.CoreUser { //fungsi yang mengambil d
 		Role:     dataModel.Role,
 	}
 }
+
 func ListModelTOCore(dataModel []User) []_user.CoreUser { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
 	var dataCore []_user.CoreUser
 	for _, value := range dataModel {
