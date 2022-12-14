@@ -12,8 +12,8 @@ type Komentar struct {
 	UserID       uint
 	RoomID       uint
 	Isi_komentar string
-	User         User
-	Room         Room
+	// User         User
+	// Room         Room
 }
 
 type User struct {
