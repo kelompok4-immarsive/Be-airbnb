@@ -4,6 +4,9 @@ import (
 	authDelivery "fajar/testing/features/auth/delivery"
 	authRepo "fajar/testing/features/auth/repository"
 	authService "fajar/testing/features/auth/service"
+	komentarDelivery "fajar/testing/features/komentar/delivery"
+	komentarRepo "fajar/testing/features/komentar/repository"
+	komentarService "fajar/testing/features/komentar/service"
 	roomDelivery "fajar/testing/features/room/delivery"
 	roomRepo "fajar/testing/features/room/repository"
 	roomService "fajar/testing/features/room/service"
@@ -16,6 +19,10 @@ import (
 )
 
 func InitFactory(e *echo.Echo, db *gorm.DB) {
+	komentarRepoFactory := komentarRepo.New(db)
+	komentarServiceFactory := komentarService.New(komentarRepoFactory)
+	komentarDelivery.New(komentarServiceFactory, e)
+
 	authRepoFactory := authRepo.NewAuth(db)
 	authServiceFactory := authService.NewAuth(authRepoFactory)
 	authDelivery.NewAuth(authServiceFactory, e)
