@@ -1,6 +1,9 @@
 package factory
 
 import (
+	authDelivery "fajar/testing/features/auth/delivery"
+	authRepo "fajar/testing/features/auth/repository"
+	authService "fajar/testing/features/auth/service"
 	roomDelivery "fajar/testing/features/room/delivery"
 	roomRepo "fajar/testing/features/room/repository"
 	roomService "fajar/testing/features/room/service"
@@ -13,6 +16,10 @@ import (
 )
 
 func InitFactory(e *echo.Echo, db *gorm.DB) {
+	authRepoFactory := authRepo.New(db)
+	authServiceFactory := authService.New(authRepoFactory)
+	authDelivery.New(authServiceFactory, e)
+
 	userRepofaktory := userRepo.NewUser(db) //menginiasialisasi func new yang ada di repository
 	userServiceFaktory := userService.NewUser(userRepofaktory)
 	userDelivery.NewUser(userServiceFaktory, e)
