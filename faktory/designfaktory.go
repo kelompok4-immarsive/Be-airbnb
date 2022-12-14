@@ -16,9 +16,9 @@ import (
 )
 
 func InitFactory(e *echo.Echo, db *gorm.DB) {
-	authRepoFactory := authRepo.New(db)
-	authServiceFactory := authService.New(authRepoFactory)
-	authDelivery.New(authServiceFactory, e)
+	authRepoFactory := authRepo.NewAuth(db)
+	authServiceFactory := authService.NewAuth(authRepoFactory)
+	authDelivery.NewAuth(authServiceFactory, e)
 
 	userRepofaktory := userRepo.NewUser(db) //menginiasialisasi func new yang ada di repository
 	userServiceFaktory := userService.NewUser(userRepofaktory)

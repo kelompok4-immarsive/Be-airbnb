@@ -6,33 +6,46 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
-type AuthHandler struct {
-	authService auth.ServiceInterface
+type AuthDelivery struct {
+	authServices auth.ServiceInterface
 }
 
-func New(service auth.ServiceInterface, e *echo.Echo) {
-	handler := &AuthHandler{
-		authService: service,
+func NewAuth(service auth.ServiceInterface, e *echo.Echo) {
+	handler := &AuthDelivery{
+		authServices: service,
 	}
-	e.POST("/auth", handler.Login)
+
+	e.POST("/login", handler.login)
+
 }
 
-func (handler *AuthHandler) Login(c echo.Context) error {
-	reqBody := UserRequest{}
-	errBind := c.Bind(&reqBody)
+func (delivery *AuthDelivery) login(c echo.Context) error {
+	authInput := AuthRequest{}
+	errBind := c.Bind(&authInput)
 	if errBind != nil {
-		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("failed to bind data"))
+		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("Error binding data "+errBind.Error()))
 	}
 
-	token, err := handler.authService.Login(reqBody.Email, reqBody.Password)
-
+	token, dataUser, err := delivery.authServices.Login(authInput.Email, authInput.Password)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.PesanGagalHelper("failed to get token data"+err.Error()))
+		return c.JSON(http.StatusInternalServerError, helper.PesanGagalHelper("failed login"))
 	}
 
-	return c.JSON(http.StatusOK, helper.PesanDataBerhasilHelper("login success", map[string]interface{}{
-		"token": token,
-	}))
+	z := []byte(authInput.Password)
+	errPass := bcrypt.CompareHashAndPassword([]byte(dataUser.Password), z)
+	if errPass != nil {
+		return c.JSON(http.StatusBadRequest, helper.PesanGagalHelper("Incorrect Password "+errPass.Error()))
+	}
+
+	data := map[string]any{
+		"user_id": dataUser.ID,
+		"token":   token,
+		"name":    dataUser.Name,
+		"role":    dataUser.Role,
+	}
+	return c.JSON(http.StatusOK, helper.PesanDataBerhasilHelper("success login", data))
+
 }
