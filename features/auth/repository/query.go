@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"fajar/testing/features/auth"
+	"fajar/testing/middlewares"
 
 	"gorm.io/gorm"
 )
