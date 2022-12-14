@@ -20,9 +20,9 @@ func New(repo komentar.RepositoryInterface) komentar.ServiceInterface {
 }
 
 func (service *komentarService) Create(input komentar.CoreKomentar) (err error) {
-	if errValidate := service.validate.Struct(input); errValidate != nil {
-		return errValidate
-	}
+	// if errValidate := service.validate.Struct(input); errValidate != nil {
+	// return errValidate
+	// }
 	_, errCreate := service.komentarRepository.Create(input)
 	if errCreate != nil {
 		return errors.New("failed to insert data, error query")
