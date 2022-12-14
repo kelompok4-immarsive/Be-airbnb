@@ -18,7 +18,7 @@ func NewAuth(service auth.ServiceInterface, e *echo.Echo) {
 		authServices: service,
 	}
 
-	e.POST("/login", handler.login)
+	e.POST("/auth", handler.login)
 
 }
 
