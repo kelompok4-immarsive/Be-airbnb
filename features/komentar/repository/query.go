@@ -34,7 +34,7 @@ func (repo *komentarRepository) Create(input komentar.CoreKomentar) (row int, er
 func (repo *komentarRepository) GetAll() (data []komentar.CoreKomentar, err error) {
 	var komentars []Komentar
 
-	tx := repo.db.Preload("User").Preload("Room").Find(&komentars)
+	tx := repo.db.Find(&komentars)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
