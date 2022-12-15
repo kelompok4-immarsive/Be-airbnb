@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fajar/testing/features/room"
+	_room "fajar/testing/features/room"
 	"fajar/testing/features/user"
 	"fajar/testing/features/user/repository"
 
@@ -18,6 +19,12 @@ type Room struct {
 	Latitude  float64
 	UserID    uint
 	User      repository.User
+	Gambar    []Gambar
+}
+type Gambar struct {
+	gorm.Model
+	Image_url string
+	RoomID    string
 }
 
 func CoretoModel(dataCore room.RoomCore) Room {
@@ -48,6 +55,18 @@ func (dataModel Room) ModeltoCore() room.RoomCore {
 
 }
 
+func (dataModel *Room) ModelstoCore() room.RoomCore {
+	return room.RoomCore{
+		Name_room: dataModel.Name_room,
+		Price:     dataModel.Price,
+		Deskripsi: dataModel.Deskripsi,
+		Status:    dataModel.Status,
+		Longitude: dataModel.Longitude,
+		Latitude:  dataModel.Latitude,
+		UserID:    dataModel.UserID,
+	}
+
+}
 func LoadUserModeltoCore(model repository.User) user.CoreUser {
 
 	return user.CoreUser{
@@ -56,4 +75,11 @@ func LoadUserModeltoCore(model repository.User) user.CoreUser {
 		Address: model.Address,
 	}
 
+}
+func ListModelTOCore(dataModel []Room) []_room.RoomCore { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
+	var dataCore []_room.RoomCore
+	for _, value := range dataModel {
+		dataCore = append(dataCore, value.ModelstoCore())
+	}
+	return dataCore //  untuk menampilkan data ke controller
 }
