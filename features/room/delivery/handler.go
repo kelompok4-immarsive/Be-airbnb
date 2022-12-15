@@ -2,8 +2,10 @@ package delivery
 
 import (
 	"fajar/testing/features/room"
+	"fajar/testing/middlewares"
 	"fajar/testing/utils/helper"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -55,6 +57,12 @@ func (delivery *RoomDeliv) GetAll(c echo.Context) error {
 
 }
 func (delivery *RoomDeliv) Updates(c echo.Context) error {
+	roletoken := middlewares.ExtractTokenUserRole(c)
+	id_user := middlewares.ExtractTokenUserId(c)
+	log.Println("Role Token", roletoken)
+	if roletoken != "Hosting" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("tidak bisa diakses ini bukan ruangan kamu"))
+	}
 	room := RoomRequest{}
 	idParam := c.Param("id")
 	id, errconv := strconv.Atoi(idParam)
@@ -68,6 +76,7 @@ func (delivery *RoomDeliv) Updates(c echo.Context) error {
 	}
 
 	result := room.reqToCore()
+	result.UserID = uint(id_user)
 	err := delivery.RoomService.UpdateRoom(id, result)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Update Failed"))
@@ -81,7 +90,12 @@ func (delivery *RoomDeliv) Deletes(c echo.Context) error {
 	// if roletoken != "admin" {
 	// 	return c.JSON(http.StatusUnauthorized, helper.FailedResponse("tidak bisa diakses khusus admin!!!"))
 	// }
+	roletoken := middlewares.ExtractTokenUserRole(c)
 
+	log.Println("Role Token", roletoken)
+	if roletoken != "Hosting" {
+		return c.JSON(http.StatusUnauthorized, helper.FailedResponse("tidak bisa diakses ini bukan ruangan kamu"))
+	}
 	idParam := c.Param("id")
 	id, errconv := strconv.Atoi(idParam)
 	if errconv != nil {

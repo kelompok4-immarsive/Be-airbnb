@@ -19,6 +19,10 @@ import (
 	userRepo "fajar/testing/features/user/repository"
 	userService "fajar/testing/features/user/service"
 
+	ReservasiDelivery "fajar/testing/features/reservation/delivery"
+	ReservationRepo "fajar/testing/features/reservation/repository"
+	ReservationService "fajar/testing/features/reservation/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -43,4 +47,8 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	GambarRepofaktory := GambarRepo.NewGambar(db) //menginiasialisasi func new yang ada di repository
 	GambarServiceFaktory := GambarService.NewGambar(GambarRepofaktory)
 	GambarDelivery.NewGambar(GambarServiceFaktory, e)
+
+	ReservasiRepofaktory := ReservationRepo.NewReservation(db) //menginiasialisasi func new yang ada di repository
+	ReservasiServiceFaktory := ReservationService.NewReservation(ReservasiRepofaktory)
+	ReservasiDelivery.NewReservation(ReservasiServiceFaktory, e)
 }

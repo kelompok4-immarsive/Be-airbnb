@@ -2,26 +2,29 @@ package repository
 
 import (
 	_user "fajar/testing/features/user"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Name     string `gorm:"type:varchar(50)"`
-	Password string `gorm:"type:varchar(500)"`
-	Email    string
-	Phone    string
-	Address  string
-	Status   string
-	Role     string
-	Rooms    []Room
-	Komentar []Komentar
+	Name        string `gorm:"type:varchar(50)"`
+	Password    string `gorm:"type:varchar(500)"`
+	Email       string
+	Phone       string
+	Address     string
+	Status      string
+	Role        string
+	Rooms       []Room
+	Komentar    []Komentar
+	Reservation []Reservation
 }
+
 type Room struct {
 	gorm.Model
 	Name_room string
-	Price     string
+	Price     float64
 	Deskripsi string
 	Status    string
 	Longitude float64
@@ -37,6 +40,17 @@ type Komentar struct {
 	Isi_komentar string
 	// User         User
 	// Room         Room
+}
+type Reservation struct {
+	gorm.Model
+	Price       float64
+	Total_Price float64
+	Start_date  time.Time
+	End_date    time.Time
+	PayID       uint
+	Status      string
+	RoomID      uint
+	UserID      uint
 }
 
 func FromCoreUser(CoreData _user.CoreUser) User {

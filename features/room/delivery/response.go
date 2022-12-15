@@ -4,7 +4,7 @@ import "fajar/testing/features/room"
 
 type RoomRespon struct {
 	Name_room string  `json:"name_room"`
-	Price     string  `json:"price"`
+	Price     float64 `json:"price"`
 	Deskripsi string  `json:"deskripsi"`
 	Status    string  `json:"status"`
 	Longitude float64 `json:"longitude"`
