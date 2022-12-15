@@ -20,6 +20,8 @@ func NewGambar(service gambar.ServiceInterface, e *echo.Echo) {
 		GambarService: service,
 	}
 	e.POST("/gambar", handler.CreateGambar)
+	e.GET("/gambar", handler.Getall)
+
 }
 
 func (delivery *GambarDeliv) CreateGambar(c echo.Context) error {
@@ -45,5 +47,16 @@ func (delivery *GambarDeliv) CreateGambar(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("error insert into database"+err.Error()))
 	}
 	return c.JSON(http.StatusOK, helper.SuccessResponse("Success Add Gambar"))
+
+}
+func (delivery *GambarDeliv) Getall(c echo.Context) error {
+
+	result, err := delivery.GambarService.Getall() //memanggil fungsi service yang ada di folder service
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.FailedResponse("erorr read data"))
+	}
+	var ResponData = ListGambarCoreToGambarRespon(result)
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("berhasil membaca  user", ResponData))
 
 }

@@ -34,3 +34,7 @@ func (service *RoomService) CreateGambar(input gambar.GambarCore) error {
 }
 
 // CreateRoom implements room.ServiceInterface
+func (service *RoomService) Getall() (data []gambar.GambarCore, err error) {
+	data, err = service.GambarRepository.Getall() // memanggil struct entities repository yang ada di entities yang berisi coding logic
+	return
+}

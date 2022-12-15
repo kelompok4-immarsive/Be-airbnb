@@ -14,8 +14,10 @@ type GambarCore struct {
 
 type ServiceInterface interface {
 	CreateGambar(input GambarCore) error
+	Getall() (data []GambarCore, err error)
 }
 
 type RepositoryInterface interface {
 	CreateGambar(input GambarCore) error
+	Getall() (data []GambarCore, err error)
 }
