@@ -33,3 +33,17 @@ func (repo *GambarRepository) CreateGambar(input gambar.GambarCore) error {
 
 	return nil
 }
+
+// Getall implements user.RepositoryEntities
+func (repo *GambarRepository) Getall() (data []gambar.GambarCore, err error) {
+	var gambars []Gambar //mengambil data gorm model(model.go)
+	tx := repo.db.Unscoped().Find(&gambars)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	var DataCore = ListModelTOCore(gambars) //mengambil data dari gorm model(file repository(model.go))
+
+	return DataCore, nil
+
+}

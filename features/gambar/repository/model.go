@@ -40,3 +40,10 @@ func (dataModel Gambar) ModeltoCore() gambar.GambarCore {
 // 	}
 
 // }
+func ListModelTOCore(dataModel []Gambar) []gambar.GambarCore { //fungsi yang mengambil data dari  user gorm(model.go)  dan merubah data ke entities usercore
+	var dataCore []gambar.GambarCore
+	for _, value := range dataModel {
+		dataCore = append(dataCore, value.ModeltoCore())
+	}
+	return dataCore //  untuk menampilkan data ke controller
+}
