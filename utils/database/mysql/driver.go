@@ -3,6 +3,7 @@ package mysql
 import (
 	"fajar/testing/config"
 
+	gambar "fajar/testing/features/gambar/repository"
 	room "fajar/testing/features/room/repository"
 	user "fajar/testing/features/user/repository"
 	"fmt"
@@ -27,6 +28,6 @@ func InitDB(cfg *config.AppConfig) *gorm.DB {
 func MigrateDB(db *gorm.DB) {
 	db.AutoMigrate(&user.User{})
 	db.AutoMigrate(&room.Room{})
-	// db.AutoMigrate(&mentee.Mentee{})
+	db.AutoMigrate(&gambar.Gambar{})
 	// db.AutoMigrate(&_feedback.Feedback{})
 }

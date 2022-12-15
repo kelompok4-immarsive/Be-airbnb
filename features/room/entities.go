@@ -21,8 +21,16 @@ type RoomCore struct {
 
 type ServiceInterface interface {
 	CreateRoom(input RoomCore) error
+	GetAll() (data []RoomCore, err error)
+	UpdateRoom(id int, input RoomCore) error
+	DeleteRoom(id int) (RoomCore, error)
+	GetUserRoom(id uint) (RoomCore, error)
 }
 
 type RepositoryInterface interface {
 	CreateRoom(input RoomCore) error
+	GetAll() (data []RoomCore, err error)
+	UpdateRoom(id int, input RoomCore) error
+	DeleteRoom(id int) (RoomCore, error)
+	GetUserRoom(id uint) (RoomCore, error)
 }
