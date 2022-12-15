@@ -1,12 +1,17 @@
 package factory
 
 import (
+	GambarDelivery "fajar/testing/features/gambar/delivery"
+	GambarRepo "fajar/testing/features/gambar/repository"
+	GambarService "fajar/testing/features/gambar/service"
+
 	authDelivery "fajar/testing/features/auth/delivery"
 	authRepo "fajar/testing/features/auth/repository"
 	authService "fajar/testing/features/auth/service"
 	komentarDelivery "fajar/testing/features/komentar/delivery"
 	komentarRepo "fajar/testing/features/komentar/repository"
 	komentarService "fajar/testing/features/komentar/service"
+
 	roomDelivery "fajar/testing/features/room/delivery"
 	roomRepo "fajar/testing/features/room/repository"
 	roomService "fajar/testing/features/room/service"
@@ -34,4 +39,8 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	RoomRepofaktory := roomRepo.NewRoom(db) //menginiasialisasi func new yang ada di repository
 	RoomServiceFaktory := roomService.NewRoom(RoomRepofaktory)
 	roomDelivery.NewRoom(RoomServiceFaktory, e)
+
+	GambarRepofaktory := GambarRepo.NewGambar(db) //menginiasialisasi func new yang ada di repository
+	GambarServiceFaktory := GambarService.NewGambar(GambarRepofaktory)
+	GambarDelivery.NewGambar(GambarServiceFaktory, e)
 }
