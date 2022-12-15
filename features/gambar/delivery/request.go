@@ -6,7 +6,7 @@ import (
 
 type GambarRequest struct {
 	Image_url string `json:"Image_url" form:"Image_url"`
-	RoomID    string `json:"RoomID " form:"RoomID "`
+	RoomID    uint   `json:"room_id " form:"room_id "`
 }
 
 func (data *GambarRequest) reqToCore() gambar.GambarCore {

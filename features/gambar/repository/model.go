@@ -10,7 +10,7 @@ import (
 type Gambar struct {
 	gorm.Model
 	Image_url string
-	RoomID    string
+	RoomID    uint
 	Room      repository.Room
 }
 
