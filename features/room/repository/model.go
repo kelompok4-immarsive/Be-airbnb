@@ -5,26 +5,39 @@ import (
 	_room "fajar/testing/features/room"
 	"fajar/testing/features/user"
 	"fajar/testing/features/user/repository"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type Room struct {
 	gorm.Model
-	Name_room string
-	Price     string
-	Deskripsi string
-	Status    string
-	Longitude float64
-	Latitude  float64
-	UserID    uint
-	User      repository.User
-	Gambar    []Gambar
+	Name_room   string
+	Price       float64
+	Deskripsi   string
+	Status      string
+	Longitude   float64
+	Latitude    float64
+	UserID      uint
+	Gambar      []Gambar
+	User        repository.User
+	Reservation []Reservation
 }
 type Gambar struct {
 	gorm.Model
 	Image_url string
 	RoomID    string
+}
+type Reservation struct {
+	gorm.Model
+	Price       float64
+	Total_Price float64
+	Start_date  time.Time
+	End_date    time.Time
+	PayID       uint
+	Status      string
+	RoomID      uint
+	UserID      uint
 }
 
 func CoretoModel(dataCore room.RoomCore) Room {
