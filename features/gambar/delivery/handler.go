@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fajar/testing/features/gambar"
 	"fajar/testing/utils/helper"
+	"strconv"
 
 	"net/http"
 
@@ -24,7 +25,9 @@ func NewGambar(service gambar.ServiceInterface, e *echo.Echo) {
 func (delivery *GambarDeliv) CreateGambar(c echo.Context) error {
 
 	gambar := GambarRequest{}
-
+	roomid := c.FormValue("room_id")
+	id, _ := strconv.Atoi(roomid)
+	gambar.RoomID = uint(id)
 	file, _ := c.FormFile("file")
 	if file != nil {
 		res, err := helper.UploadProfile(c)

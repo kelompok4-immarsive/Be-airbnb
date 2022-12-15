@@ -21,9 +21,9 @@ func NewGambar(db *gorm.DB) gambar.RepositoryInterface {
 // CreateGambar implements gambar.RepositoryInterface
 func (repo *GambarRepository) CreateGambar(input gambar.GambarCore) error {
 	RoomGorm := CoretoModel(input)
-
+	fmt.Println("gambar", RoomGorm)
 	tx := repo.db.Create(&RoomGorm)
-	fmt.Println("gambar", tx.Error)
+
 	if tx.Error != nil {
 		return tx.Error
 	}
