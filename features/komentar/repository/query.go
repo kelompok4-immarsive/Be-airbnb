@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"fajar/testing/features/komentar"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -20,6 +21,7 @@ func New(db *gorm.DB) komentar.RepositoryInterface {
 func (repo *komentarRepository) Create(input komentar.CoreKomentar) (row int, err error) {
 	komentarGorm := fromCore(input)
 	tx := repo.db.Create(&komentarGorm) // proses insert data
+	fmt.Print(tx.Error)
 	if tx.Error != nil {
 		return -1, tx.Error
 	}
