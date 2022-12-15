@@ -1,18 +1,6 @@
 package delivery
 
-import (
-	"fajar/testing/features/auth"
-)
-
-type UserRequest struct {
+type AuthRequest struct {
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
-}
-
-func ToCore(userReq UserRequest) auth.CoreUser {
-	userCore := auth.CoreUser{
-		Email:    userReq.Email,
-		Password: userReq.Password,
-	}
-	return userCore
 }

@@ -4,8 +4,10 @@ import (
 	"fajar/testing/config"
 
 	gambar "fajar/testing/features/gambar/repository"
+	komentar "fajar/testing/features/komentar/repository"
 	room "fajar/testing/features/room/repository"
 	user "fajar/testing/features/user/repository"
+
 	"fmt"
 	"log"
 
@@ -29,5 +31,6 @@ func MigrateDB(db *gorm.DB) {
 	db.AutoMigrate(&user.User{})
 	db.AutoMigrate(&room.Room{})
 	db.AutoMigrate(&gambar.Gambar{})
-	// db.AutoMigrate(&_feedback.Feedback{})
+	db.AutoMigrate(&komentar.Komentar{})
+
 }
